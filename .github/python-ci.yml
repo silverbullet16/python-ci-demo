@@ -1,4 +1,5 @@
 name: Python CI
+
 on:
   push:
     branches:
@@ -12,27 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4  # ✅ fixed typo
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
 
-      with:
-        python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
+      - name: Lint code
+        run: |
+          flake8 .
 
-    - name: Lint code
-      run: |
-        flake8 .
+      - name: Run tests
+        run: |
+          pytest
 
-    - name: Run tests
-      run: |
-        pytest
-
-    - name: Simulate deploy
-      run: echo "Deployment steps complete."
+      - name: Simulate deploy
+        run: echo "Deployment steps complete."
